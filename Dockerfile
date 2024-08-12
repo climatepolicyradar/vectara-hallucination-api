@@ -13,7 +13,7 @@ RUN pip install poetry
 
 # Install project dependencies
 RUN poetry config virtualenvs.create false \
-  && poetry install --no-interaction --no-ansi
+  && poetry install --no-interaction --no-ansi --extras "async"
 
 # Make port 5000 available to the world outside this container
 EXPOSE 80
