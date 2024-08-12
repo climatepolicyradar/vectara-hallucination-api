@@ -69,15 +69,43 @@ http POST http://localhost:5000/evaluate \
     response="According to the provided context, the IPCC has stated that human activities are the main cause of global warming, and climate change is a major worldwide issue that needs to be addressed urgently."
 ```
 
-## Deployment
+## Docker Commands
 
-To deploy the API:
+### Building the Docker Image
+
+To build the Docker image:
+
+```
+make build
+```
+
+### Running the API Locally with Docker
+
+To run the API locally using Docker:
+
+```
+make run
+```
+
+The API will be available at `http://localhost:5000`.
+
+### Deploying the API
+
+To build and deploy the API:
 
 ```
 make deploy
 ```
 
-This command will build a Docker image and deploy it according to the configuration in your Makefile.
+This command will build a Docker image, tag it, and push it to the specified ECR repository.
+
+### Cleaning Up
+
+To remove the local Docker image:
+
+```
+make clean
+```
 
 ## Contributing
 
