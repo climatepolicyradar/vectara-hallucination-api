@@ -44,6 +44,12 @@ def evaluate():
     return jsonify({
         "score": score
     })
+    
+    
+@app.get("/health")
+async def get_health():
+    """ Get application health.  """
+    return {"status": "OK"}
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
