@@ -20,4 +20,3 @@ build-backend = "poetry.core.masonry.api"
 [[tool.poetry.source]]
 name = "torch-cpu"
 url = "https://download.pytorch.org/whl/cpu"
-priority = "explicit"
