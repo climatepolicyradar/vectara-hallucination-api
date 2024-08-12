@@ -107,9 +107,25 @@ To remove the local Docker image:
 make clean
 ```
 
+## Testing
+
+To run the unit tests:
+
+```
+poetry run python -m unittest test_app.py
+```
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+Please make sure to update tests as appropriate.
 
 ## License
 
