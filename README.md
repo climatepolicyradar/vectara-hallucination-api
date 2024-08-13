@@ -11,6 +11,7 @@ The Hallucination Detection API is designed to evaluate the faithfulness of an A
 - Python 3.7+
 - Poetry (Python package manager)
 - Docker (for containerization and deployment)
+- FastAPI
 
 ## Installation
 
@@ -29,12 +30,13 @@ The Hallucination Detection API is designed to evaluate the faithfulness of an A
 
 ### Running the API locally
 
-1. Start the Flask server:
+1. Start the uvicorn server:
    ```
-   poetry run flask run --host=0.0.0.0
+   poetry run uvicorn app:app --host 0.0.0.0 --port 8000
    ```
 
-2. The API will be available at `http://localhost:5000`.
+2. The API will be available at `http://localhost:8000`.
+3. You can access the interactive API documentation at `http://localhost:8000/docs`.
 
 ### API Endpoints
 
@@ -61,12 +63,19 @@ The score ranges from 0 to 1, where 1 indicates perfect faithfulness and 0 indic
 
 ### Example Usage
 
-Using `httpie`:
+You can use the interactive API documentation at `http://localhost:8000/docs` to test the API directly in your browser.
 
-```
-http POST http://localhost:5000/evaluate \
-    context="Climate change is a significant global challenge that requires immediate action. The Intergovernmental Panel on Climate Change (IPCC) has reported that human activities are the primary driver of global warming." \
-    response="According to the provided context, the IPCC has stated that human activities are the main cause of global warming, and climate change is a major worldwide issue that needs to be addressed urgently."
+Alternatively, you can use `curl` or any HTTP client. Here's an example using `curl`:
+
+```bash
+curl -X 'POST' \
+  'http://localhost:8000/evaluate' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "context": "Climate change is a significant global challenge that requires immediate action. The Intergovernmental Panel on Climate Change (IPCC) has reported that human activities are the primary driver of global warming.",
+  "response": "According to the provided context, the IPCC has stated that human activities are the main cause of global warming, and climate change is a major worldwide issue that needs to be addressed urgently."
+}'
 ```
 
 ## Docker Commands
