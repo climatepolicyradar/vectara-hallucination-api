@@ -15,15 +15,8 @@ RUN pip install poetry
 RUN poetry config virtualenvs.create false \
   && poetry install --no-interaction --no-ansi
 
-# Make port 5000 available to the world outside this container
-EXPOSE 80
-
-
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-# Define environment variable
-ENV FLASK_APP=app.py
-
-# Run app.py when the container launches
-CMD ["poetry", "run", "flask", "run", "--host=0.0.0.0"]
+# Run the application with Uvicorn
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80"]

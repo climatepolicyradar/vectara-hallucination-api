@@ -4,7 +4,7 @@ build:
 	docker build -t vectara-api .
 
 run:
-	docker run -p 5000:5000 vectara-api
+	docker run -p 80:80 vectara-api
 
 deploy: build
 	docker tag vectara-api:latest 845035659285.dkr.ecr.eu-west-1.amazonaws.com/vectara-api:latest

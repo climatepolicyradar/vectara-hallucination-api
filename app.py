@@ -1,9 +1,19 @@
-from flask import Flask, request, jsonify
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+import requests
 from typing import Optional
 import torch
 from transformers import AutoModelForSequenceClassification
 
-app = Flask(__name__)
+
+class EvaluationRequest(BaseModel):
+    context: str
+    response: str
+
+class EvaluationResponse(BaseModel):
+    score: float
+
 
 class Vectara:
     TYPE = "faithfulness"
@@ -22,34 +32,35 @@ class Vectara:
         pairs = zip([context], [response])
         with torch.no_grad():
             scores = self.model.predict(pairs).detach().cpu().numpy()
-            
         return float(scores[0])
+
+
 
 vectara = Vectara()
 
-@app.route('/evaluate', methods=['POST'])
-def evaluate():
-    data = request.json
-    context = data.get('context')
-    response = data.get('response')
+app = FastAPI()
+origins = ["*"]
 
-    if not context or not response:
-        return jsonify({"error": "Both context and response are required"}), 400
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-    score = vectara.evaluate(context, response)
+@app.post("/evaluate")
+async def evaluate(request: EvaluationRequest):
 
-    if score is None:
-        return jsonify({"error": "Evaluation failed"}), 500
+    result = vectara.evaluate(request.context, request.response)
+    if result is None:
+        raise HTTPException(status_code=500, detail="Evaluation failed")
 
-    return jsonify({
-        "score": score
-    })
+    return {
+        "score": result
+    }
     
-    
-@app.get("/health")
+@app.get("/")
 async def get_health():
     """ Get application health.  """
     return {"status": "OK"}
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
